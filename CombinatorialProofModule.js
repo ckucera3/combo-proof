@@ -4,15 +4,16 @@ var app = app || {};
 /**
  * CombinatorialProof module
  */
-app.CombinatorialProof = (function () {
+app.CombinatorialProofModule = (function () {
     'use strict';
 
     var init = function (baseElement, n) {
         var base, config;
-        var oneTest = 1;
         base = d3.select(baseElement);
+        // create the dot matrix
         config = configure(base, n);
-        graphAll(config);
+        config.matrix = app.DotMatrixModule.init(baseElement, n);
+        graph(config);
         return config;
     };
 
@@ -50,15 +51,8 @@ app.CombinatorialProof = (function () {
         return config;
     };
 
-    var graphAll = function (config) {
-        config.data = createData(config);
-        config.base.append("p").html("For example, let `n = " + config.n + "`");
-        graph(config);
-    }
-
     var graph = function (config) {
-        structure(config);
-        elements(config, config.svg, config.n);
+        config.base.append("p").html("For example, let `n = " + config.n + "`");
         label(config);
     }
 
@@ -68,13 +62,6 @@ app.CombinatorialProof = (function () {
         .text("Here is the array formed from " + arrayName(config.n) + ". There are `(n+1)^2` elements altogether, with `n + 1` squares on the main diagonal.")
         ;
 
-    }
-
-    var graph1 = function (config) {
-        structure(config);
-        elements(config, config.svg, config.n);
-        labels1(config);
-        showDiagonalSections(config, config.elements);
     }
 
     var update = function (config) {
@@ -93,12 +80,11 @@ app.CombinatorialProof = (function () {
     }
 
     var update1 = function (config) {
-        config.elements.transition().duration(750).attr("opacity", function (d) {
-            if (d.i == d.j) {
-                return 0
-            } else {
-            return 1;
-            }
+
+        config.matrix.elements.transition().each(function () {
+            config.matrix.hideDiagonal();
+            config.matrix.changeDotUpperTriangleColor("blue");
+            config.matrix.changeDotLowerTriangleColor("red");
         });
 
         config.label.style("opacity", 0)
@@ -114,79 +100,9 @@ app.CombinatorialProof = (function () {
         ;
     }
 
-    var elements = function (config, svg, n) {
-        var elements, squareLength;
-        squareLength = config.m.width / (n + 1);
-        elements = svg.selectAll("circle")
-            .data(config.data);
-
-        elements.enter()
-            .append("circle")
-            .attr("r", squareLength / 4)
-            .attr("opacity", 0)
-            .on("mouseover", function () {
-                d3.select(this).attr("fill", config.colors.second);
-            })
-            .transition().duration(750)
-            .attr("fill", config.colors.first)
-            .attr("cx", function(d) {
-                return d.i * squareLength + squareLength / 2;
-            })
-            .attr("cy", function(d) {
-                return d.j * squareLength + squareLength / 2;
-            })
-            .attr("opacity", 1)
-            ;
-
-        config.elements = elements;
-    }
-
-    var structure = function (config) {
-        var borderPath, svg;
-        // insert svg into the base
-        svg = config.base.append("svg")
-            .attr("width", config.m.width)
-            .attr("height", config.m.height)
-            .attr("border", 1)
-            .attr("stroke", "black")
-            .attr("stroke-width", 1)
-            ;
-
-        // give border
-        var borderPath = svg.append("rect")
-            .attr("x", 0)
-            .attr("y", 0)
-            .attr("height", config.m.height)
-            .attr("width", config.m.width)
-            .style("stroke", "black")
-            .style("fill", "none")
-            .style("stroke-width", 3)
-            ;
-
-        config.borderPath = borderPath;
-        config.svg = svg;
-
-    };
-
     // Helper functions
     var arrayName = function (n) {
         return "`(" + (n + 1) + " x " + (n + 1) + ")`"
-    }
-
-    var createData = function (config) {
-        var n, datum, data;
-        data = [];
-        n = config.n;
-        for(var i = 0; i < (n + 1); i++) {
-            for(var j = 0; j < (n + 1); j++) {
-                datum = {
-                    i: i,
-                    j: j
-                }
-                data.push(datum);
-            }
-        }
-        return data;
     }
 
     return {

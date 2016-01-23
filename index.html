@@ -5,21 +5,24 @@
 		<title>A Combinatorial Proof</title>
 	</head>
 	<body>
-		<h1 id="header"> Combinatorial Proof </h1>
-		<div style="width:50%;display:flex;justify-content:center;align-items:center;">
-			<div>
+		<h1 id="header"> A Combinatorial Proof </h1>
+		<div id="main-div">
 				<p>`1 + 2 + 3 + ... + n = [n(n + 1)] / 2`</p>
-				<p>Consider an `(n+1) x (n+1)` matrix of squares. There are `(n+1)^2` squares altogether, with `n + 1` squares on the main diagonal.</p>
-				<div style="border: black" id="base"></div> 
-			</div>
-			<span><button style="display:flex;justify-content:flex-end;align-items:center;" id="button">>></button></span>
+				<p>Consider an `(n+1) x (n+1)` matrix of dots. There are `(n+1)^2` dots altogether, with `n + 1` dots on the main diagonal.</p>
+		<div id="base"></div>
 		</div>
-	<script src="../bower_components/d3/d3.js"></script>
+		<span>
+			<button style="display:flex;justify-content:flex-end;align-items:center;" id="button">>></button>
+		</span>
+	<script src="./bower_components/d3/d3.js"></script>
 	<script src="CombinatorialProofModule.js"></script>
+	<script src="DotMatrixModule.js"></script>
 	<script src="index.js"></script>
-<!-- 	<script src="../bower_components/MathJax/MathJax.js?config=AM_HTMLorMML-full"></script>
-		 -->		<link href='https://fonts.googleapis.com/css?family=Inconsolata:400,700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-	<link href='../bower_components/bootstrap/dist/css/bootstrap-theme.css' rel='stylesheet' type='text/css'>
+	 	
+	<script src="./bower_components/MathJax/MathJax.js?config=AM_HTMLorMML-full"></script>
+	
+	<link href='https://fonts.googleapis.com/css?family=Inconsolata:400,700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+	<link href='./bower_components/bootstrap/dist/css/bootstrap-theme.css' rel='stylesheet' type='text/css'>
 	<link href='style.css' rel='stylesheet' type='text/css'>
 
 	</body>

@@ -1,9 +1,10 @@
 var app = app || {};
 
+var config = app.CombinatorialProofModule.init("#base", 10);
 
-var config = app.CombinatorialProof.init("#base", 7);
+
 document.getElementById("button").addEventListener("click", buttonClick);
 
 function buttonClick() {
-	app.CombinatorialProof.update(config);
+	app.CombinatorialProofModule.update(config);
 }
